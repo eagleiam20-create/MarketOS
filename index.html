@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#101827">
+<title>MarketOS</title>
+<style>
+:root{--bg:#f4f6fb;--ink:#182230;--muted:#788396;--green:#13a878;--dark:#101827}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+button,input{font:inherit}.top{background:var(--dark);color:white;padding:22px 18px 25px;border-radius:0 0 24px 24px}
+.brand{font-weight:800;font-size:23px;letter-spacing:.3px}.brand span{color:#32d6a0}.sub{font-size:12px;color:#b5c0d0;margin-top:4px}
+.search{margin-top:18px;background:#fff;border-radius:12px;display:flex;padding:12px;color:#8792a4;gap:8px}
+.search input{border:0;outline:0;width:100%;color:#182230;background:transparent}
+.wrap{padding:17px 16px 95px}.hello{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.hello h2{font-size:20px;margin:0 0 5px}.muted{color:var(--muted);font-size:12px}
+.pill{background:#e1f8ef;color:#087e58;padding:8px 11px;border-radius:20px;font-size:12px;font-weight:700}
+.hero{background:linear-gradient(120deg,#0e9f75,#1bc49a);border-radius:18px;padding:19px;color:white;display:flex;justify-content:space-between;align-items:center;margin-bottom:21px}
+.hero h3{font-size:19px;margin:0 0 7px}.hero p{font-size:12px;line-height:1.5;margin:0;max-width:210px;color:#e3fff5}.hero .art{font-size:42px}
+.section{display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px}.section h3{font-size:16px;margin:0}
+.section button{border:0;background:none;color:var(--green);font-size:12px;font-weight:bold}
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.cat{background:white;border-radius:13px;padding:13px 4px;text-align:center;font-size:11px;font-weight:700;box-shadow:0 2px 9px #1a2a4408}
+.cat b{display:block;font-size:23px;margin-bottom:7px}.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.product{background:white;border-radius:15px;padding:10px;box-shadow:0 3px 12px #17253b0a}.photo{height:105px;border-radius:11px;background:#f0f5f5;display:flex;align-items:center;justify-content:center;font-size:48px}
+.product h4{font-size:13px;margin:10px 0 5px}.price{font-size:15px;font-weight:800}.old{font-size:10px;color:#9aa3b1;text-decoration:line-through;margin-left:5px}
+.stock{font-size:10px;color:var(--green);margin-top:5px}.add{margin-top:10px;width:100%;border:0;background:var(--dark);color:white;border-radius:9px;padding:9px;font-size:12px;font-weight:700}
+.empty{background:white;border-radius:14px;padding:24px;text-align:center;color:var(--muted);font-size:13px}.nav{position:fixed;bottom:0;left:0;right:0;background:white;display:grid;grid-template-columns:repeat(4,1fr);padding:9px 4px calc(9px + env(safe-area-inset-bottom));box-shadow:0 -4px 20px #17253b0b}
+.nav button{border:0;background:none;color:#8a94a4;font-size:10px;padding:4px}.nav button b{display:block;font-size:20px;margin-bottom:4px}.nav button.active{color:var(--green);font-weight:800}
+.count{display:inline-block;background:#f04444;color:white;border-radius:50%;font-size:10px;padding:2px 5px;margin-left:3px}
+.page{display:none}.page.active{display:block}.primary{border:0;background:var(--green);color:white;padding:12px 16px;border-radius:10px;font-weight:700;width:100%}
+.notice{font-size:11px;color:#7c8798;line-height:1.5;margin-top:14px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Market<span>OS</span></div><div class="sub">YOUR EVERYDAY MARKETPLACE</div>
+  <div class="search">⌕ <input id="search" placeholder="Search products..." oninput="renderProducts()"></div>
+</header>
+<main class="wrap">
+<section id="home" class="page active">
+  <div class="hello"><div><h2>Welcome to MarketOS 👋</h2><div class="muted">Shop smart. Live easy.</div></div><div class="pill">● Demo mode</div></div>
+  <div class="hero"><div><h3>Your market, one tap away</h3><p>Discover everyday essentials and add them to your basket.</p></div><div class="art">🛍️</div></div>
+  <div class="section"><h3>Categories</h3></div>
+  <div class="categories"><div class="cat"><b>🥦</b>Grocery</div><div class="cat"><b>🥛</b>Dairy</div><div class="cat"><b>🍪</b>Snacks</div><div class="cat"><b>🧴</b>Personal</div></div>
+  <div class="section"><h3>Popular products</h3><button onclick="showPage('shop')">VIEW ALL →</button></div><div id="homeProducts" class="products"></div>
+</section>
+<section id="shop" class="page"><div class="section"><h3>Shop products</h3></div><div class="muted" style="margin-bottom:14px">Demo catalogue available offline on this phone.</div><div id="shopProducts" class="products"></div></section>
+<section id="cart" class="page"><div class="section"><h3>Your basket</h3></div><div id="cartBody"></div></section>
+<section id="account" class="page"><div class="section"><h3>My account</h3></div><div class="empty">👤<h3>Welcome to MarketOS</h3><p>Your demo basket is saved on this phone.</p></div><div class="section"><h3>About this app</h3></div><div class="empty" style="text-align:left"><b>MarketOS mobile demo</b><p>This build runs locally inside the APK. Login, real orders, payments and shared customer data are not connected until the backend is deployed.</p></div><p class="notice">Demo only. No real payment is taken and no order is sent to a store.</p></section>
+</main>
+<nav class="nav">
+<button class="active" onclick="showPage('home',this)"><b>⌂</b>Home</button>
+<button onclick="showPage('shop',this)"><b>▦</b>Shop</button>
+<button onclick="showPage('cart',this)"><b>🛒<span id="cartCount" class="count">0</span></b>Basket</button>
+<button onclick="showPage('account',this)"><b>☻</b>Account</button>
+</nav>
+<script>
+const products=[
+{id:1,name:'Fresh Tomatoes',price:35,old:45,emoji:'🍅',cat:'Grocery'},
+{id:2,name:'Farm Milk 500ml',price:32,old:38,emoji:'🥛',cat:'Dairy'},
+{id:3,name:'Brown Bread',price:40,old:48,emoji:'🍞',cat:'Bakery'},
+{id:4,name:'Potato 1 kg',price:30,old:35,emoji:'🥔',cat:'Grocery'},
+{id:5,name:'Crunchy Biscuits',price:25,old:30,emoji:'🍪',cat:'Snacks'},
+{id:6,name:'Fresh Apples',price:120,old:140,emoji:'🍎',cat:'Fruits'},
+{id:7,name:'Cooking Oil 1L',price:145,old:165,emoji:'🫒',cat:'Grocery'},
+{id:8,name:'Hand Wash',price:79,old:95,emoji:'🧴',cat:'Personal'}];
+let cart={};try{cart=JSON.parse(localStorage.getItem('marketos_cart')||'{}')}catch(e){cart={}}
+function renderProducts(){
+ const q=(document.getElementById('search').value||'').toLowerCase();
+ const list=products.filter(p=>p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q));
+ const card=p=>'<div class="product"><div class="photo">'+p.emoji+'</div><h4>'+p.name+'</h4><div><span class="price">₹'+p.price+'</span><span class="old">₹'+p.old+'</span></div><div class="stock">● In stock · '+p.cat+'</div><button class="add" onclick="add('+p.id+')">＋ Add to basket</button></div>';
+ document.getElementById('homeProducts').innerHTML=list.slice(0,4).map(card).join('');
+ document.getElementById('shopProducts').innerHTML=list.map(card).join('')||'<div class="empty">No products found.</div>';
+}
+function save(){try{localStorage.setItem('marketos_cart',JSON.stringify(cart))}catch(e){}document.getElementById('cartCount').textContent=Object.values(cart).reduce((a,b)=>a+b,0)}
+function add(id){cart[id]=(cart[id]||0)+1;save();renderCart();showToast('Added to basket')}
+function changeQty(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];save();renderCart()}
+function renderCart(){
+ const items=products.filter(p=>cart[p.id]);const total=items.reduce((s,p)=>s+p.price*cart[p.id],0);
+ document.getElementById('cartBody').innerHTML=items.length?
+ items.map(p=>'<div class="product" style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><div style="font-size:30px">'+p.emoji+'</div><div style="flex:1"><b>'+p.name+'</b><div class="muted">₹'+p.price+' × '+cart[p.id]+'</div></div><button onclick="changeQty('+p.id+',-1)" style="border:0;padding:8px">−</button><button onclick="changeQty('+p.id+',1)" style="border:0;padding:8px">＋</button></div>').join('')+
+ '<div class="empty" style="text-align:left"><b>Total: ₹'+total+'</b><p>Checkout is a demo only; no order or payment is sent.</p><button class="primary" onclick="alert(\\'Demo only: online checkout is not connected yet.\\')">Proceed to checkout</button></div>':
+ '<div class="empty">🛒<h3>Your basket is empty</h3><p>Add some products to get started.</p><button class="primary" onclick="showPage(\\'shop\\')">Browse products</button></div>';
+}
+function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');else document.querySelectorAll('.nav button')[['home','shop','cart','account'].indexOf(id)].classList.add('active');if(id==='cart')renderCart();window.scrollTo(0,0)}
+function showToast(t){let n=document.getElementById('toast');if(!n){n=document.createElement('div');n.id='toast';n.style='position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#101827;color:white;padding:12px 18px;border-radius:10px;z-index:9;font-size:13px';document.body.appendChild(n)}n.textContent=t;n.style.display='block';setTimeout(()=>n.style.display='none',1300)}
+renderProducts();save();renderCart();
+</script>
+</body>
+</html>
