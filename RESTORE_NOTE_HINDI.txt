@@ -1,0 +1,13 @@
+MarketOS — First UI Restored
+
+Is package mein aapke pehle upload kiye gaye marketos2.zip ka original UI/CSS restore kiya gaya hai. Baad mein maange gaye 30-day subscription reminder, owner approval aur PWA routes ko preserve karne ki koshish ki gayi hai.
+
+IMPORTANT: Security ke liye aapki purani .env file is ZIP mein include nahi ki gayi. Apni local .env ko is folder mein khud copy karein. .env ko GitHub par upload/share na karein.
+
+Run (Windows CMD):
+python -m venv .venv
+.venv\Scripts\activate
+python -m pip install -r requirements.txt
+python -m uvicorn main:app --host 127.0.0.1 --port 8000
+
+Open http://127.0.0.1:8000
